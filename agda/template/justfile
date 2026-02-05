@@ -1,0 +1,12 @@
+set shell := ["zsh", "-c"]
+
+default: typecheck
+
+typecheck:
+    agda --no-main src/Main.agda
+
+watch:
+    ls src/*.agda | entr -r just typecheck
+
+repl:
+    agda -I src/Main.agda
