@@ -1,19 +1,6 @@
 { inputs, ... }: {
   flake.templates.agda = {
-    path = let
-      pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-      upstreamGitignore = "${inputs.agda-upstream}/.gitignore";
-    in pkgs.runCommand "agda-template" {} ''
-      mkdir -p $out
-      cp -r ${./template}/* $out/
-      
-      # Append our custom ignores to the upstream gitignore
-      cat ${upstreamGitignore} > $out/.gitignore
-      echo "" >> $out/.gitignore
-      echo "# Toolchain specific ignores" >> $out/.gitignore
-      echo ".direnv/" >> $out/.gitignore
-      echo "result" >> $out/.gitignore
-    '';
+    path = ./template;
     description = "Standard Agda setup with Just and Cornelis";
   };
 
