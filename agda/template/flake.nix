@@ -9,10 +9,11 @@
   outputs = { self, nixpkgs, nix-toolchains }:
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in {
       devShells = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
+        let
+          pkgs = import nixpkgs { inherit system; };
         in {
           default = nix-toolchains.lib.agda.mkShell { inherit pkgs; };
         });

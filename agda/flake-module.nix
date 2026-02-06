@@ -9,7 +9,7 @@
       name = "agda-shell";
       packages = [
         (agda.withPackages (p: [ p.standard-library ]))
-        pkgs.haskellPackages.cornelis
+        pkgs.cornelis
         pkgs.just
         pkgs.entr
       ] ++ extraPackages;
@@ -17,6 +17,12 @@
   };
 
   perSystem = { config, self', inputs', pkgs, system, ... }: {
+    # Apply cornelis overlay to get the cornelis package
+    _module.args.pkgs = import inputs.nixpkgs {
+      inherit system;
+      overlays = [ inputs.cornelis.overlays.cornelis ];
+    };
+
     devShells.agda = inputs.self.lib.agda.mkShell { inherit pkgs; };
   };
 }

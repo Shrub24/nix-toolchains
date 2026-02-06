@@ -1,0 +1,3 @@
+name: agda-project
+depend: standard-library
+include: src
