@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     cornelis = {
-      url = "github:agda/cornelis";
+      url = "github:agda/cornelis/v2.8.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

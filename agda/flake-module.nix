@@ -5,11 +5,14 @@
   };
 
   flake.lib.agda = {
-    mkShell = { pkgs, agda ? pkgs.agda, extraPackages ? [] }: pkgs.mkShell {
+    mkShell = { pkgs, agda ? pkgs.agda, extraPackages ? [] }:
+      let
+        cornelisPkg = inputs.cornelis.packages.${pkgs.system}.cornelis;
+      in pkgs.mkShell {
       name = "agda-shell";
       packages = [
         (agda.withPackages (p: [ p.standard-library ]))
-        pkgs.cornelis
+        cornelisPkg
         pkgs.just
         pkgs.entr
       ] ++ extraPackages;
@@ -17,12 +20,6 @@
   };
 
   perSystem = { config, self', inputs', pkgs, system, ... }: {
-    # Apply cornelis overlay to get the cornelis package
-    _module.args.pkgs = import inputs.nixpkgs {
-      inherit system;
-      overlays = [ inputs.cornelis.overlays.cornelis ];
-    };
-
     devShells.agda = inputs.self.lib.agda.mkShell { inherit pkgs; };
   };
 }
